@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>VioletChat · KING_YOSEF_</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <div id="app" class="app">
+    <!-- AUTH SCREEN (login / signup) -->
+    <div id="authScreen" class="auth-screen">
+      <div class="auth-card">
+        <h1 class="logo"><i class="fas fa-comment-dots"></i> VioletChat</h1>
+        <p class="sub">where purple meets conversation</p>
+        <div class="tabs">
+          <button id="loginTab" class="tab active">Log in</button>
+          <button id="signupTab" class="tab">Sign up</button>
+        </div>
+        <div id="loginForm" class="form">
+          <input type="text" id="loginUsername" placeholder="Username" autocomplete="username">
+          <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
+          <button id="loginBtn" class="btn-primary">Log in</button>
+        </div>
+        <div id="signupForm" class="form hidden">
+          <input type="text" id="signupUsername" placeholder="Choose username" autocomplete="username">
+          <input type="text" id="signupDisplay" placeholder="Display name (optional)">
+          <input type="password" id="signupPassword" placeholder="Password" autocomplete="new-password">
+          <button id="signupBtn" class="btn-primary">Create account</button>
+        </div>
+        <p class="dev-badge">Developer: <strong>KING_YOSEF_</strong></p>
+      </div>
+    </div>
+
+    <!-- MAIN CHAT INTERFACE (hidden by default) -->
+    <div id="mainScreen" class="main-screen hidden">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="profile-header">
+          <div class="avatar" id="myAvatar">?</div>
+          <div class="my-info">
+            <span id="myDisplayName" class="display-name">User</span>
+            <span id="myUsername" class="username">@user</span>
+          </div>
+          <button id="editProfileBtn" class="icon-btn" title="Edit profile"><i class="fas fa-pen"></i></button>
+          <button id="logoutBtn" class="icon-btn" title="Log out"><i class="fas fa-sign-out-alt"></i></button>
+        </div>
+        <div class="add-friend-bar">
+          <input type="text" id="searchUsername" placeholder="Search username…">
+          <button id="addFriendBtn" class="icon-btn"><i class="fas fa-user-plus"></i></button>
+        </div>
+        <div class="friends-list-container">
+          <h3 class="section-title"><i class="fas fa-users"></i> Friends</h3>
+          <ul id="friendsList" class="friends-list"></ul>
+        </div>
+      </aside>
+
+      <!-- CHAT AREA -->
+      <main class="chat-area">
+        <div class="chat-header">
+          <div class="chat-avatar" id="chatAvatar">?</div>
+          <div class="chat-info">
+            <span id="chatDisplayName">Select a friend</span>
+            <span id="chatStatus" class="status-badge offline">offline</span>
+          </div>
+        </div>
+
+        <div id="messagesContainer" class="messages-container">
+          <div class="empty-chat"><i class="fas fa-comment-slash"></i> Choose a friend to start chatting</div>
+        </div>
+
+        <div class="message-input-area hidden" id="messageInputArea">
+          <input type="text" id="messageInput" placeholder="Type a message…">
+          <button id="sendBtn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+          <label for="imageUpload" class="image-label"><i class="fas fa-image"></i></label>
+          <input type="file" id="imageUpload" accept="image/*" hidden>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- EDIT PROFILE MODAL -->
+  <div id="editModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Edit profile</h2>
+      <label>Display name</label>
+      <input type="text" id="editDisplayName" placeholder="Display name">
+      <label>New password (leave blank to keep)</label>
+      <input type="password" id="editPassword" placeholder="New password">
+      <div class="modal-actions">
+        <button id="cancelEdit" class="btn-secondary">Cancel</button>
+        <button id="saveEdit" class="btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
