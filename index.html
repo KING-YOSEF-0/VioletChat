@@ -20,14 +20,12 @@
           <button type="button" id="signupTab" class="tab">Sign up</button>
         </div>
         
-        <!-- LOGIN FORM -->
         <div id="loginForm" class="form">
           <input type="text" id="loginUsername" placeholder="Username" autocomplete="username">
           <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
           <button type="button" id="loginBtn" class="btn-primary">Log in</button>
         </div>
         
-        <!-- SIGNUP FORM -->
         <div id="signupForm" class="form hidden">
           <input type="text" id="signupUsername" placeholder="Choose username" autocomplete="username">
           <input type="text" id="signupDisplay" placeholder="Display name (optional)">
@@ -39,8 +37,10 @@
       </div>
     </div>
 
-    <!-- MAIN SCREEN (Hidden by default, shows after login) -->
+    <!-- MAIN CHAT INTERFACE -->
     <div id="mainScreen" class="main-screen hidden">
+      
+      <!-- SIDEBAR -->
       <aside class="sidebar">
         <div class="profile-header">
           <div class="avatar" id="myAvatar">?</div>
@@ -50,16 +50,47 @@
           </div>
           <button type="button" id="logoutBtn" class="icon-btn" title="Log out"><i class="fas fa-sign-out-alt"></i></button>
         </div>
+
+        <!-- ADD FRIEND SEARCH -->
+        <div class="add-friend-bar">
+          <input type="text" id="searchUsername" placeholder="Search username…">
+          <button type="button" id="addFriendBtn" class="icon-btn"><i class="fas fa-user-plus"></i></button>
+        </div>
+
+        <!-- FRIENDS LIST -->
+        <div class="friends-list-container">
+          <h3 class="section-title"><i class="fas fa-users"></i> Friends</h3>
+          <ul id="friendsList" class="friends-list">
+            <!-- Friends will appear here -->
+          </ul>
+        </div>
       </aside>
+
+      <!-- CHAT AREA -->
       <main class="chat-area">
         <div class="chat-header">
-          <h2 style="color: #e6c7ff; padding: 20px;">Welcome to VioletChat! You are logged in.</h2>
+          <div class="chat-avatar" id="chatAvatar">?</div>
+          <div class="chat-info">
+            <span id="chatDisplayName">Select a friend</span>
+            <span id="chatStatus" class="status-badge offline">offline</span>
+          </div>
+        </div>
+
+        <div id="messagesContainer" class="messages-container">
+          <div class="empty-chat"><i class="fas fa-comment-slash"></i> Choose a friend to start chatting</div>
+        </div>
+
+        <!-- MESSAGE INPUT -->
+        <div class="message-input-area hidden" id="messageInputArea">
+          <input type="text" id="messageInput" placeholder="Type a message…">
+          <button type="button" id="sendBtn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+          <label for="imageUpload" class="image-label"><i class="fas fa-image"></i></label>
+          <input type="file" id="imageUpload" accept="image/*" hidden>
         </div>
       </main>
     </div>
   </div>
 
-  <!-- This links to your script.js file -->
   <script src="script.js"></script>
 </body>
 </html>
