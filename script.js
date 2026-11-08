@@ -1,110 +1,111 @@
-// ============================================
-//  VIOLETCHAT · KING_YOSEF_  
-// ============================================
+console.log("VioletChat JS Loaded Successfully!");
 
-// 1. STORAGE KEYS
-const USERS_KEY = 'violetchat_users';
-const SESSION_KEY = 'violetchat_currentUser';
-const FRIENDS_KEY = 'violetchat_friends'; 
-const MESSAGES_KEY = 'violetchat_messages'; 
-
-// 2. LOAD DATA FROM LOCAL STORAGE
-function loadJSON(key, fallback) {
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : fallback;
-}
-let users = loadJSON(USERS_KEY, {});            
-let friends = loadJSON(FRIENDS_KEY, {});        
-let allMessages = loadJSON(MESSAGES_KEY, {});   
-let currentUser = localStorage.getItem(SESSION_KEY); 
-
-// 3. DOM ELEMENTS
-// Tabs & Forms
+// DOM Elements
 const loginTab = document.getElementById('loginTab');
 const signupTab = document.getElementById('signupTab');
 const loginForm = document.getElementById('loginForm');
 const signupForm = document.getElementById('signupForm');
-// Auth Inputs
+
 const loginUsername = document.getElementById('loginUsername');
 const loginPassword = document.getElementById('loginPassword');
 const loginBtn = document.getElementById('loginBtn');
+
 const signupUsername = document.getElementById('signupUsername');
 const signupDisplay = document.getElementById('signupDisplay');
 const signupPassword = document.getElementById('signupPassword');
 const signupBtn = document.getElementById('signupBtn');
 
-// 4. TAB SWITCHING LOGIC (Bulletproof)
-loginTab.addEventListener('click', function(e) {
-    e.preventDefault();
+// --- TAB SWITCHING ---
+loginTab.addEventListener('click', () => {
     loginTab.classList.add('active');
     signupTab.classList.remove('active');
     loginForm.classList.remove('hidden');
     signupForm.classList.add('hidden');
 });
 
-signupTab.addEventListener('click', function(e) {
-    e.preventDefault();
+signupTab.addEventListener('click', () => {
     signupTab.classList.add('active');
     loginTab.classList.remove('active');
     signupForm.classList.remove('hidden');
     loginForm.classList.add('hidden');
 });
 
-// 5. AUTHENTICATION LOGIC
-signupBtn.addEventListener('click', function() {
+// --- SIGNUP LOGIC ---
+signupBtn.addEventListener('click', () => {
     const username = signupUsername.value.trim();
     const display = signupDisplay.value.trim();
     const password = signupPassword.value;
 
-    if (!username) return alert('Please enter a username.');
-    if (!password) return alert('Please enter a password.');
-    if (users[username]) return alert('Username already taken!');
+    if (!username || !password) {
+        alert("Please fill in both username and password.");
+        return;
+    }
 
-    // Create user
-    users[username] = {
-        password: password,
-        displayName: display || username
-    };
-    localStorage.setItem(USERS_KEY, JSON.stringify(users));
-    
-    // Setup friends list for new user
-    if (!friends[username]) friends[username] = [];
-    localStorage.setItem(FRIENDS_KEY, JSON.stringify(friends));
+    // Get existing users from LocalStorage
+    let users = JSON.parse(localStorage.getItem('violetchat_users')) || {};
 
-    alert('Account created successfully! You can now log in.');
+    if (users[username]) {
+        alert("Username already taken!");
+        return;
+    }
+
+    // Save new user
+    users[username] = { password: password, displayName: display || username };
+    localStorage.setItem('violetchat_users', JSON.stringify(users));
+
+    alert("Account created successfully! Please log in.");
     
-    // Auto-fill login and switch to login tab
+    // Switch to login tab and auto-fill
     loginUsername.value = username;
     loginPassword.value = password;
     loginTab.click();
 });
 
-loginBtn.addEventListener('click', function() {
+// --- LOGIN LOGIC ---
+loginBtn.addEventListener('click', () => {
     const username = loginUsername.value.trim();
     const password = loginPassword.value;
 
-    if (!users[username]) return alert('User not found.');
-    if (users[username].password !== password) return alert('Incorrect password.');
+    let users = JSON.parse(localStorage.getItem('violetchat_users')) || {};
 
-    // Success! Save session and reload page to load the main app
-    localStorage.setItem(SESSION_KEY, username);
-    window.location.reload();
-});
+    if (!users[username]) {
+        alert("User not found. Please sign up first.");
+        return;
+    }
 
-// 6. AUTO-LOGIN CHECK
-// If a user is already logged in, hide the login screen
-if (currentUser && users[currentUser]) {
+    if (users[username].password !== password) {
+        alert("Incorrect password.");
+        return;
+    }
+
+    // Success! Save session
+    localStorage.setItem('violetchat_currentUser', username);
+    
+    // Show Main Screen
     document.getElementById('authScreen').classList.add('hidden');
     document.getElementById('mainScreen').classList.remove('hidden');
     
-    // Initialize the main app (you will add your chat logic here later)
-    document.getElementById('myDisplayName').textContent = users[currentUser].displayName;
-    document.getElementById('myUsername').textContent = '@' + currentUser;
-    document.getElementById('myAvatar').textContent = users[currentUser].displayName[0].toUpperCase();
-    
-    // Logout button
-    document.getElementById('logoutBtn').addEventListener('click', function() {
-        localStorage.removeItem(SESSION_KEY);
-        window.location.reload();
-    });
+    // Update Profile UI
+    document.getElementById('myDisplayName').textContent = users[username].displayName;
+    document.getElementById('myUsername').textContent = '@' + username;
+    document.getElementById('myAvatar').textContent = users[username].displayName[0].toUpperCase();
+});
+
+// --- LOGOUT LOGIC ---
+document.getElementById('logoutBtn').addEventListener('click', () => {
+    localStorage.removeItem('violetchat_currentUser');
+    window.location.reload();
+});
+
+// --- AUTO LOGIN (if already logged in) ---
+const currentUser = localStorage.getItem('violetchat_currentUser');
+if (currentUser) {
+    let users = JSON.parse(localStorage.getItem('violetchat_users')) || {};
+    if (users[currentUser]) {
+        document.getElementById('authScreen').classList.add('hidden');
+        document.getElementById('mainScreen').classList.remove('hidden');
+        document.getElementById('myDisplayName').textContent = users[currentUser].displayName;
+        document.getElementById('myUsername').textContent = '@' + currentUser;
+        document.getElementById('myAvatar').textContent = users[currentUser].displayName[0].toUpperCase();
+    }
 }
